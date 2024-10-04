@@ -143,7 +143,7 @@ void switches(const char *p, int *result, va_list args)
 int tinyprintf(const char *format, ...)
 {
     va_list args;
-    int *result = 0; // pointer
+    int result = 0; // pointer
     va_start(args, format);
 
     const char *p = format;
@@ -153,14 +153,14 @@ int tinyprintf(const char *format, ...)
         if (*p == '%')
         {
             ++p; // move to next character
-            switches(p, result, args);
+            switches(p, &result, args);
         }
         else
         {
             putchar(*p);
             ++p;
-            (*result)++;
+            (result)++;
         }
     }
-    return *result;
+    return result;
 }
