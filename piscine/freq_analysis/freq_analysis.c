@@ -15,8 +15,8 @@ void freq_analysis(const char text[], const char table[])
     }
 
 
-    char letters[26];
-    int counts[26];
+    char letters[26]; 
+    int counts[26]; // fonctionne avec letters (compte la freq de lettre dans letters)
     int uniqueCount = 0;
 
 
@@ -60,9 +60,9 @@ void freq_analysis(const char text[], const char table[])
 
 int main()
 {
-    const char text[] = "ABBCCCDDDDD"; 
+    const char text[] = ""; 
 
-    const char table[] = "ABCD"; 
+    const char table[] = ""; 
 
     freq_analysis(text, table);
 
