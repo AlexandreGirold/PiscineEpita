@@ -54,9 +54,8 @@ void freq_analysis(const char text[], const char table[])
         mapping[letters[i] - 'A'] = table[i];
 
 
-    for (char c = 'A'; c <= 'Z'; c++)
-        if (mapping[c - 'A'] != 0)
-            printf("%c %c\n", mapping[c - 'A'], c);
+    for (int i = 0; i < uniqueCount; i++) 
+        printf("%c %c\n", mapping[letters[i] - 'A'], letters[i]);
 }
 
 int main()
