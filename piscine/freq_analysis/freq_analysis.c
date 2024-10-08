@@ -20,7 +20,7 @@ void freq_analysis(const char text[], const char table[])
     int uniqueCount = 0;
 
 
-    for (int i = 0; i < 26; i++) 
+    for (int i = 0; i < 26; i++)//trop de loop 
     {
         if (freq[i] > 0) 
         {
@@ -55,14 +55,15 @@ void freq_analysis(const char text[], const char table[])
 
 
     for (int i = 0; i < uniqueCount; i++) 
-        printf("%c %c\n", mapping[letters[i] - 'A'], letters[i]);
+        printf("%c %c\n",letters[i], mapping[letters[i] - 'A']);
 }
 
 int main()
 {
-    const char text[] = ""; 
+    const char text[] = "ABBCCCDDDD"; 
 
-    const char table[] = ""; 
+
+    const char table[] = "ABCD"; 
 
     freq_analysis(text, table);
 
