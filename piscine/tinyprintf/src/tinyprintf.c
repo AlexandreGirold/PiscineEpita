@@ -38,6 +38,41 @@ static int len_int(int n)
     return len;
 }
 */
+
+/* 
+void print_correct(int n, const char *base) {
+    int base_length = 0;
+
+    while (base[base_length] != '\0') {
+        base_length++;
+    }
+
+    if (n < 0 && base_length == 10) {
+        putchar('-');
+        n = -n;
+    }
+
+    // Handle zero case
+    if (n == 0) {
+        putchar(base[0]); 
+        return;
+    }
+
+    char buffer[32];
+    int index = 0;
+
+    
+    while (n > 0) {
+        int remainder = n % base_length;
+        buffer[index++] = base[remainder];
+        n /= base_length;
+    }
+
+    while (index > 0) {
+        putchar(buffer[--index]);
+    }
+}
+*/
 void print(char *s)
 {
     if (s == NULL)
