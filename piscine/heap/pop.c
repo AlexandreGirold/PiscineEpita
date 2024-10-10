@@ -1,3 +1,8 @@
+#include <stdlib.h>
+#include "heap.h"
+#include <assert.h>
+
+
 static void heapify_down(struct heap *heap, size_t index) 
 {
     size_t largest = index;
