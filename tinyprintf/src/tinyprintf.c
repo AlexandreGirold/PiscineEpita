@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 static int result = 0;
-
+/*
 static int reverse(int num)
 {
     int rev_num = 0;
@@ -26,7 +26,7 @@ static int len(const char *base)
     return len;
 }
 
-/*
+
 static int len_int(int n)
 {
     int len = 0;
@@ -85,10 +85,11 @@ static char *int_to_char(int n)
 }
 */
 
+/*
 void my_itoa_base(int n, const char *base)
 {
     int isneg = (n < 0) ? 1 : 0; // is not neg
-    int i = 0; 
+    int i = 0;
     if(isneg)
         n = reverse(-n);
     else
@@ -128,6 +129,74 @@ void my_itoa_base(int n, const char *base)
     // reverse(s, i - 1);
     //  s[i] = '\0';
 }
+*/
+void my_itoa_base(int n, const char *base)
+{
+    int base_length = 0;
+
+    while (base[base_length] != '\0')
+    {
+        base_length++;
+    }
+
+    if (n < 0 && base_length == 10)
+    {
+        putchar('-');
+        n = -n;
+    }
+
+    if (n == 0)
+    {
+        putchar(base[0]);
+        return;
+    }
+
+    char buffer[32];
+    int index = 0;
+
+    while (n > 0)
+    {
+        int remainder = n % base_length;
+        buffer[index++] = base[remainder];
+        n /= base_length;
+    }
+
+    while (index > 0)
+    {
+        putchar(buffer[--index]);
+    }
+}
+
+void my_itoa_base_u(unsigned int n, const char *base)
+{
+    int base_length = 0;
+
+    while (base[base_length] != '\0')
+    {
+        base_length++;
+    }
+
+    if (n == 0)
+    {
+        putchar(base[0]);
+        return;
+    }
+
+    char buffer[32];
+    int index = 0;
+
+    while (n > 0)
+    {
+        int remainder = n % base_length;
+        buffer[index++] = base[remainder];
+        n /= base_length;
+    }
+
+    while (index > 0)
+    {
+        putchar(buffer[--index]);
+    }
+}
 
 static void case_int(va_list args)
 {
@@ -138,19 +207,19 @@ static void case_int(va_list args)
 static void case_uint(va_list args)
 {
     unsigned int val = va_arg(args, unsigned int);
-    my_itoa_base(val, "0123456789");
+    my_itoa_base_u(val, "0123456789");
 }
 
 static void case_octal(va_list args)
 {
     unsigned int val = va_arg(args, unsigned int);
-    my_itoa_base(val, "01234567");
+    my_itoa_base_u(val, "01234567");
 }
 
 static void case_hex(va_list args)
 {
     unsigned int val = va_arg(args, unsigned int);
-    my_itoa_base(val, "0123456789abcdef");
+    my_itoa_base_u(val, "0123456789abcdef");
 }
 
 static void case_char(va_list args)
@@ -163,15 +232,18 @@ static void case_char(va_list args)
 static void case_str(va_list args)
 {
     char *temp = va_arg(args, char *);
-    print(temp);
+    if (temp == NULL)
+        print("(null)");
+    else
+        print(temp);
 }
 
-void switches(const char p, va_list args)
+void switches(const char *p, va_list args)
 {
-    switch (p)
+    switch (*p)
     {
     case '%':
-        putchar(p);
+        putchar(*p);
         (result)++;
         break;
     case 'd':
@@ -193,6 +265,11 @@ void switches(const char p, va_list args)
         case_hex(args);
         break;
     default:
+        --p;
+        putchar(*p);
+        (result)++;
+        ++p;
+        putchar(*p);
         (result)++;
     }
 }
@@ -203,13 +280,15 @@ int tinyprintf(const char *format, ...)
     va_start(args, format);
 
     const char *p = format;
+    if (!format)
+        return 0;
 
     while (*p != '\0')
     {
         if (*p == '%')
         {
             ++p; // move to next character
-            switches(*p, args);
+            switches(p, args);
             ++p;
         }
         else
@@ -221,4 +300,3 @@ int tinyprintf(const char *format, ...)
     }
     return result;
 }
-

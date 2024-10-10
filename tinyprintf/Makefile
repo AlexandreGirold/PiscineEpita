@@ -1,7 +1,7 @@
 CC=gcc
-CFLAGS=-std=c99 -Wall -Wextra -Werror -pedantic -Wvla -fsanitize=address -g3 
-LDFLAGS=-fsanitize=address
-LDLIBS=-lcriterion
+CFLAGS=-std=c99 -Wall -Wextra -Werror --coverage -fPIC  -Wvla -fsanitize=address -g3 
+LDFLAGS=-fsanitize=address --coverage
+LDLIBS=-lcriterion -lgcov
 SRC=src/tinyprintf.c tests/testing.c
 OBJ=${SRC:.c=.o}
 

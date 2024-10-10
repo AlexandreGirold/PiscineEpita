@@ -41,9 +41,10 @@ void freq_analysis(const char text[], const char table[]) {
     }
 }
 
-int main() {
+/*int main() {
     freq_analysis("ABBCCCDDDDD", "ABCD");
     printf("\n");
     freq_analysis("AAB", "XY");
     return 0;
 }
+*/

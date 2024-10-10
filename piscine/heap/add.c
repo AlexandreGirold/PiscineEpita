@@ -21,7 +21,8 @@ static void heapify_up(struct heap *heap, size_t index)
 
 void add(struct heap *heap, int val) 
 {
-    if (heap->size >= heap->capacity) {
+    if (heap->size >= heap->capacity) 
+    {
         heap->capacity *= 2;
         heap->array = realloc(heap->array, heap->capacity * sizeof(int));
     }
