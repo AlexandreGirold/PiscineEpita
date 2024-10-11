@@ -17,7 +17,7 @@
 struct stack *stack_push(struct stack *s, struct token t)
 {
     struct stack *add = malloc(1 * sizeof(struct stack));
-    add->data = t->val;
+    add->token = t;
     add->next = s;
     return add;
 }
