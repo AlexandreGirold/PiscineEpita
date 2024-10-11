@@ -15,14 +15,14 @@ void fifo_push(struct fifo *fifo, struct token t)
     {
         struct list *e = malloc(sizeof(struct list));
         e->next = NULL;
-        e->token->val = t->val;
+        e->token = t;
         fifo->head = fifo->tail = e;
     }
     else
     {
         struct list *e = malloc(sizeof(struct list));
         e->next = NULL;
-        e->data = t->val;
+        e->token = t;
         fifo->tail->next = e;
         fifo->tail = e;
     }
