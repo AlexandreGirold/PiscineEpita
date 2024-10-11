@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stddef.h>
-#include <stdlin.h>
-#include <string.>
+#include <stdlib.h>
+#include <string.h>
 
 #include "evalexpr.h"
 
