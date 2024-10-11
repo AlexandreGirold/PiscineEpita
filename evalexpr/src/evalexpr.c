@@ -6,16 +6,41 @@
 
 #include "evalexpr.h"
 
+
+int parse_integer(char **p) //double pointer pour modifier le pointer et pas une copie
+{
+    int value = 0;
+    while (isdigit(**p)) {
+        value = value * 10 + (**p - '0');
+        (*p)++;
+    }
+    return value;
+}
+
 void parser(char *str)
 {
     if(!str)
-        return str; //NULL
+        return; //NULL
+
+    struct stack *operatorStack = NULL; 
+    struct fifo *outputQueue = fifo_init(); 
+
     char *p = str;
-    struct stack *operator = malloc(1 * sizeof(struct stack));
-    struct stack *output = malloc(1 * sizeof(struct stack));
-    
-    while(p)
-    {   
-        if(*p == 
-    }
+    while (*p != '\0') 
+    {
+        if (isspace(*p)) {
+            // Skip whitespace
+            p++;
+            continue;
+        }
+        if (isdigit(*p)) 
+        {
+            int value = parse_integer(&p);
+            struct token t;
+            t.type = INT;
+            t.val = value;
+            fifo_push(outputQueue, t);
+        }
+        
+
 }
