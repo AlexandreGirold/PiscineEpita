@@ -8,7 +8,7 @@ struct token
     enum token_type type;
     enum associative ass;
     int val;
-}
+};
 
 
 enum token_type
@@ -26,7 +26,7 @@ enum token_type
     PAR = 5,//( and )
 };
 
-enum assocative
+enum associative
 {
     left,
     right,
