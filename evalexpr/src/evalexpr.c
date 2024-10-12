@@ -17,6 +17,8 @@ int parse_integer(char **p) //double pointer pour modifier le pointer et pas une
     return value;
 }
 
+void handle_operator(char op, struct stack **operatorStack)
+
 void parser(char *str)
 {
     if(!str)
