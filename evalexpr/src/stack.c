@@ -1,8 +1,8 @@
-#include "evalexpr.h"
-
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "evalexpr.h"
 
 /*struct stack *init(void)
 {
@@ -26,11 +26,6 @@ struct stack *stack_pop(struct stack *s)
 {
     if (!s)
         return NULL;
-    if (s->next == NULL)
-    {
-        free(s);
-        return NULL;
-    }
     struct stack *temp = s;
     s = s->next;
     free(temp);
@@ -39,5 +34,10 @@ struct stack *stack_pop(struct stack *s)
 
 int stack_peek(struct stack *s)
 {
-    return s->token->val;
+    return s->token.val;
+}
+
+struct token peek_tok_stack(struct stack *s)
+{
+    return s->token;
 }

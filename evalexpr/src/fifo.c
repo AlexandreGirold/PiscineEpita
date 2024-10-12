@@ -31,12 +31,12 @@ void fifo_push(struct fifo *fifo, struct token t)
 
 int fifo_head(struct fifo *fifo)
 {
-    return fifo->head->data;
+    return fifo->head->token.val;
 }
 
 void fifo_pop(struct fifo *fifo)
 {
-    if(!fifo)
+    if (!fifo)
         return;
     struct list *temp = fifo->head;
     fifo->head = fifo->head->next;
@@ -44,7 +44,7 @@ void fifo_pop(struct fifo *fifo)
     free(temp);
 }
 
-void fifo_print(const struct fifo *fifo)
+void fifo_print(struct fifo *fifo)
 {
     if (!fifo || fifo->size == 0)
         return;
@@ -53,8 +53,40 @@ void fifo_print(const struct fifo *fifo)
         struct list *p = fifo->head;
         for (size_t i = 0; i < fifo->size; i++)
         {
-            printf("%d\n", p->data);
+            printf("%d\n", p->token.type);
             p = p->next;
         }
     }
+}
+
+struct fifo *fifo_init(void)
+{
+    struct fifo *f = malloc(sizeof(struct fifo));
+    if (!f)
+        return NULL;
+    f->head = NULL;
+    f->tail = NULL;
+    f->size = 0;
+    return f;
+}
+
+void fifo_clear(struct fifo *fifo)
+{
+    if (!fifo)
+        return;
+    while (fifo->head != NULL)
+    {
+        fifo_pop(fifo);
+    }
+}
+
+void fifo_destroy(struct fifo *fifo)
+{
+    if (!fifo)
+        return;
+    while (fifo->head != NULL)
+    {
+        fifo_pop(fifo);
+    }
+    free(fifo);
 }
