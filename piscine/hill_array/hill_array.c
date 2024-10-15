@@ -1,8 +1,3 @@
-#include "hill_array.h"
-#include <stdio.h>
-#include <errno.h>
-#include <assert.h>
-
 int top_of_the_hill(int tab[], size_t len) {
     if (len == 0) {
         return -1;  // Empty array is invalid
@@ -29,7 +24,7 @@ int top_of_the_hill(int tab[], size_t len) {
         i++;
     }
 
-    // Ensure there is a descent after the peak
+    // Descend the hill
     while (i < len - 1 && tab[i] > tab[i + 1]) {
         if (tab[i + 1] < 0) {
             return -1; // Invalid if next number is negative
