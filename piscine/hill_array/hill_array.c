@@ -20,7 +20,7 @@ int top_of_the_hill(int tab[], size_t len) {
 
     // Check if we reached the top
     if (i == 0 || i == len - 1) {
-        return -1; // No peak found at edges
+        return -1; // No peak found, or peak is at the edges
     }
 
     // Peak could have multiple equal elements
