@@ -1,16 +1,23 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ "$#" -eq 0 ]; then
-    echo "1"  # The factorial of 0 is 1
-    exit 0
+if [ "$#" -eq 0 ]
+then
+    exit 1
 fi
 
-factorial=1
+if [ "$#" -gt 1 ]
+then
+    exit 1
+fi
 
+num=$1
+fact=1
 
-for (( i=1; i<=$1; i++ )); do
-    factorial=$(( factorial * i ))
+while [ $num -gt 1 ]
+do
+  fact=$((fact * num))  #fact = fact * num
+  num=$((num - 1))      #num = num - 1
 done
 
-echo "$factorial"
-exit 0
+echo "$fact"
+exit 0;

@@ -1,0 +1,4 @@
+This is line 1
+This is line 2
+REPLACED LINE
+This is line 4

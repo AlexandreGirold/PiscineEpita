@@ -1,22 +1,27 @@
-#include <stddef.h>
+#include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include "insertion_sort.h"
+#include <string.h>
 
-void insertion_sort(void **array, f_cmp comp) {
-    if (array == NULL || comp == NULL) {
-        return; // Invalid input
-    }
+typedef int (*f_cmp)(const void *, const void *);
 
-    for (size_t i = 1; array[i] != NULL; i++) {
-        void *key = array[i];
-        size_t j = i - 1;
+void swap(void **a, void **b)
+{
+    // On maitrise la swap
+    void *temp = *a;
+    *a = *b;
+    *b = temp;
+}
 
-        // Move elements of array[0..i-1] that are greater than key
-        // to one position ahead of their current position
-        while (j != (size_t)(-1) && comp(array[j], key) > 0) {
-            array[j + 1] = array[j];
-            j--;
-        }
-        array[j + 1] = key;
-    }
+void insertion_sort(void **array, f_cmp comp)
+{
+    if (!array)
+        return;
+    if (!comp)
+        return;
+    if (*array == NULL)
+        return;
+    for (size_t i = 1; array[i] != NULL; i++)
+        for (size_t j = i; j > 0 && comp(array[j - 1], array[j]) > 0; j--)
+            swap(&array[j - 1], &array[j]);
 }

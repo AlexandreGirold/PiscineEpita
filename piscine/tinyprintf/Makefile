@@ -1,7 +1,7 @@
 CC=gcc
-CFLAGS=-std=c99 -Wall -Wextra -Werror -pedantic -Wvla -fsanitize=address -g3 
-LDFLAGS=-fsanitize=address
-LDLIBS=-lcriterion
+CFLAGS=-std=c99 -Wall -Wextra -Werror -Wvla -fsanitize=address -g3 #--coverage -fPIC
+LDFLAGS=-fsanitize=address #--coverage
+LDLIBS=-lcriterion #-lgcov
 SRC=src/tinyprintf.c tests/testing.c
 OBJ=${SRC:.c=.o}
 
@@ -25,4 +25,5 @@ OUT = main
 .PHONY : all clean
 
 clean:
-	$(RM) *.o testsuite
+	$(RM) *.o testsuite tests/*.o src/*.o src/*.gcno src/*.gcda tests/*.gcno tests/*.gcda
+
