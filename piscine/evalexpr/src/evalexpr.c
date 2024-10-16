@@ -59,6 +59,26 @@ static void handle_op_lex(char **p, struct fifo **output_queue)
     (*p)++;
 }
 
+static void handle_unary_op_lex(char **p, struct fifo **output_queue)
+{
+    struct token t;
+    switch (**p)
+    {
+    case '+':
+        t.type = UNI;
+        t.val = 0;
+        break;
+    case '-':
+        t.type = UNO;
+        t.val = 0;
+        break;
+    default:
+        return; // Not a unary operator
+    }
+    fifo_push(*output_queue, t);
+    (*p)++;
+}
+
 static int my_pow(int a, int b)
 {
     if (b == 0)
@@ -102,6 +122,19 @@ static int do_math(int e2, int e1, struct token t)
     }
 }
 
+static int do_unary_math(int e, struct token t)
+{
+    switch (t.type)
+    {
+    case UNI:
+        return e; // Unary plus does nothing
+    case UNO:
+        return -e; // Unary minus negates the value
+    default:
+        return e;
+    }
+}
+
 static void popping(struct fifo **q, struct stack **st)
 {
     while (*st != NULL)
@@ -112,11 +145,6 @@ static void popping(struct fifo **q, struct stack **st)
         fifo_push(*q, popped);
     }
 }
-/*static struct token unary(char **p)
-{
-
-}
-*/
 
 static int is_op(struct token token)
 {
@@ -124,11 +152,17 @@ static int is_op(struct token token)
             || token.type == DIV || token.type == MOD || token.type == POW);
 }
 
+static int is_unary_op(struct token token)
+{
+    return (token.type == UNI || token.type == UNO);
+}
+
 struct fifo *lex_queue(char *str)
 {
     struct fifo *output_queue = fifo_init();
-
     char *p = str;
+    int last_was_op = 1; // Assume the start is the position for a unary operator
+
     while (*p != '\0')
     {
         if (isspace(*p))
@@ -144,12 +178,19 @@ struct fifo *lex_queue(char *str)
             t.type = INT;
             t.val = value;
             fifo_push(output_queue, t);
+            last_was_op = 0;
         }
-        else if (*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '%'
-                 || *p == '^' || *p == ')' || *p == '(')
+        else if (*p == '+' || *p == '-' || *p == '*' || *p == '/' || *p == '%' || *p == '^' || *p == ')' || *p == '(')
         {
-            // TODO : add UNARY here
-            handle_op_lex(&p, &output_queue);
+            if (last_was_op && (*p == '+' || *p == '-'))
+            {
+                handle_unary_op_lex(&p, &output_queue);
+            }
+            else
+            {
+                handle_op_lex(&p, &output_queue);
+            }
+            last_was_op = 1;
         }
         else
         {
@@ -171,32 +212,42 @@ int rpn(struct fifo *tok_q)
     {
         if (q->head->token.type == INT)
         {
-            st = stack_push(st, q->head->token); // push token INT into stack
-            fifo_pop(q); // continiue in the queue
+            st = stack_push(st, q->head->token); // Push token INT into stack
+            fifo_pop(q); // Continue in the queue
         }
-        else if (q->head->token.type == ADD || q->head->token.type == SUB
-                 || q->head->token.type == MULT || q->head->token.type == DIV
-                 || q->head->token.type == MOD || q->head->token.type == POW)
+        else if (is_op(q->head->token))
         {
             if (st == NULL)
-                return 4; // Bad arg, too many operator
+                return 4; // Bad arg, too many operators
 
-            int temp1;
-            temp1 = stack_peek(st);
+            int temp1 = stack_peek(st);
             st = stack_pop(st);
 
             if (st == NULL)
                 return 4; // Bad arg
 
-            int temp2;
-            temp2 = stack_peek(st);
+            int temp2 = stack_peek(st);
             st = stack_pop(st);
 
             res = do_math(temp1, temp2, q->head->token);
 
             temp_tok.val = res;
             st = stack_push(st, temp_tok);
-            fifo_pop(q); // continiue in the queue
+            fifo_pop(q); // Continue in the queue
+        }
+        else if (is_unary_op(q->head->token))
+        {
+            if (st == NULL)
+                return 4; // Bad arg, too many operators
+
+            int temp = stack_peek(st);
+            st = stack_pop(st);
+
+            res = do_unary_math(temp, q->head->token);
+
+            temp_tok.val = res;
+            st = stack_push(st, temp_tok);
+            fifo_pop(q); // Continue in the queue
         }
     }
     res = stack_peek(st);
