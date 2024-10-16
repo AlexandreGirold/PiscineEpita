@@ -4,6 +4,7 @@
 
 #include "evalexpr.h"
 
+/*
 int main(int argc, char *argv[])
 {
     if (argc > 2)
@@ -42,12 +43,12 @@ int main(int argc, char *argv[])
     free(arr);
     return 0;
 }
+*/
 
-/*
 int main(void)
 {
     int result = 0;
-    char *arr = "6+6";
+    char *arr = "1^-1";
 
     struct fifo *q = lex_queue(arr);
     //fifo_print(q);
@@ -62,4 +63,4 @@ int main(void)
     free(q);
 
 
-}*/
+}

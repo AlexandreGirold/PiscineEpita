@@ -26,34 +26,42 @@ static void handle_op_lex(char **p, struct fifo **output_queue)
     case '*':
         t.type = MULT;
         t.val = 1;
+        t.ass = LEFT;
         break;
     case '/':
         t.type = DIV;
         t.val = 1;
+        t.ass = LEFT;
         break;
     case '+':
         t.type = ADD;
         t.val = 0;
+        t.ass = LEFT;
         break;
     case '-':
         t.type = SUB;
         t.val = 0;
+        t.ass = LEFT;
         break;
     case '%':
         t.type = MOD;
         t.val = 1;
+        t.ass = LEFT;
         break;
     case ')':
         t.type = PARR;
         t.val = 4;
+        t.ass = NONE;
         break;
     case '(':
         t.type = PARL;
         t.val = 4;
+        t.ass = NONE;
         break;
     default:
         t.type = POW;
         t.val = 2;
+        t.ass = RIGHT;
     }
     fifo_push(*output_queue, t);
     (*p)++;
@@ -67,10 +75,12 @@ static void handle_unary_op_lex(char **p, struct fifo **output_queue)
     case '+':
         t.type = UNI;
         t.val = 0;
+        t.ass = RIGHT;
         break;
     case '-':
         t.type = UNO;
         t.val = 0;
+        t.ass = RIGHT;
         break;
     default:
         return; // Not a unary operator
@@ -101,7 +111,15 @@ static int my_pow(int a, int b)
 static int do_math(int e2, int e1, struct token t)
 {
     if (t.type == DIV && e2 == 0)
-        return 3; // arithmetical error;
+    {
+        fprintf(stderr, "div by 0 not possible\n");
+        exit(3); // arithmetical error;
+    }
+    if (t.type == MOD && e2 == 0)
+    {
+        fprintf(stderr, "modulo by 0 not possible\n");
+        exit(3); // arithmetical error;
+    }
 
     switch (t.type)
     {
@@ -139,6 +157,11 @@ static void popping(struct fifo **q, struct stack **st)
 {
     while (*st != NULL)
     {
+        if (peek_tok_stack(*st).type == PARL)
+        {
+            fprintf(stderr, "Error: Mismatched parentheses\n");
+            exit(1);
+        }
         struct token popped;
         popped = peek_tok_stack(*st);
         *st = stack_pop(*st);
@@ -218,13 +241,19 @@ int rpn(struct fifo *tok_q)
         else if (is_op(q->head->token))
         {
             if (st == NULL)
-                return 4; // Bad arg, too many operators
+            {
+                fifo_destroy(q);
+                exit(4); // Bad arg, too many operators
+            }
 
             int temp1 = stack_peek(st);
             st = stack_pop(st);
 
             if (st == NULL)
-                return 4; // Bad arg
+            {
+                fifo_destroy(q);
+                exit(4); // Bad arg
+            }
 
             int temp2 = stack_peek(st);
             st = stack_pop(st);
@@ -238,8 +267,10 @@ int rpn(struct fifo *tok_q)
         else if (is_unary_op(q->head->token))
         {
             if (st == NULL)
-                return 4; // Bad arg, too many operators
-
+            {
+                fifo_destroy(q);
+                exit(4); // Bad arg, too many operators
+            }
             int temp = stack_peek(st);
             st = stack_pop(st);
 
@@ -299,30 +330,18 @@ struct fifo *shunting_yard(struct fifo *tok_q)
             if (st == NULL)
             {
                 fprintf(stderr, "Error: Mismatched parentheses\n");
-                exit(1);
+                exit(2);
             }
             st = stack_pop(st); // Pop the left parenthesis
             fifo_pop(q); // Remove the right parenthesis from the queue
         }
         else
         {
-            fprintf(stderr, "Error: Unknown token type\n");
-            exit(1);
+            fprintf(stderr, "Error: can be operator or unary not working\n");
+            exit(2);
         }
     }
 
-    // Pop all the operators left in the stack
-    while (st != NULL)
-    {
-        if (peek_tok_stack(st).type == PARL)
-        {
-            fprintf(stderr, "Error: Mismatched parentheses\n");
-            exit(1);
-        }
-        struct token temp = peek_tok_stack(st);
-        st = stack_pop(st);
-        fifo_push(output, temp);
-    }
-    
+    popping(&output, &st);
     return output;
 }
