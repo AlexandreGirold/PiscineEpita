@@ -217,26 +217,26 @@ struct fifo *shunting_yard(struct fifo *tok_q)
             fifo_push(output, q->head->token);
             fifo_pop(q);
         }
-        if (q->size > 0 && is_op(q->head->token))
+        else if (is_op(q->head->token))
         {
-            while (st != NULL && is_op(q->head->token)
-                   && stack_peek(st) > q->head->token.val
+            while (st != NULL && is_op(peek_tok_stack(st))
+                   && ((q->head->token.ass == LEFT && stack_peek(st) >= q->head->token.val)
+                       || (q->head->token.ass == RIGHT && stack_peek(st) > q->head->token.val))
                    && peek_tok_stack(st).type != PARL)
             {
-                struct token temp;
-                temp = peek_tok_stack(st);
+                struct token temp = peek_tok_stack(st);
                 st = stack_pop(st);
                 fifo_push(output, temp);
             }
             st = stack_push(st, q->head->token);
             fifo_pop(q);
         }
-        else if (q->size > 0 && q->head->token.type == PARL)
+        else if (q->head->token.type == PARL)
         {
             st = stack_push(st, q->head->token);
             fifo_pop(q);
         }
-        else if (q->size > 0 && q->head->token.type == PARR)
+        else if (q->head->token.type == PARR)
         {
             struct token popped;
             while (st != NULL && peek_tok_stack(st).type != PARL)
@@ -244,14 +244,34 @@ struct fifo *shunting_yard(struct fifo *tok_q)
                 popped = peek_tok_stack(st);
                 st = stack_pop(st);
                 fifo_push(output, popped);
-                fifo_pop(q);
             }
-            if (st != NULL)
-                exit(4); // TODO :check if error correct
-            st =
-                stack_pop(st); // here popping the left bracket and not using it
+            if (st == NULL)
+            {
+                fprintf(stderr, "Error: Mismatched parentheses\n");
+                exit(1);
+            }
+            st = stack_pop(st); // Pop the left parenthesis
+            fifo_pop(q); // Remove the right parenthesis from the queue
+        }
+        else
+        {
+            fprintf(stderr, "Error: Unknown token type\n");
+            exit(1);
         }
     }
-    popping(&output, &st);
+
+    // Pop all the operators left in the stack
+    while (st != NULL)
+    {
+        if (peek_tok_stack(st).type == PARL)
+        {
+            fprintf(stderr, "Error: Mismatched parentheses\n");
+            exit(1);
+        }
+        struct token temp = peek_tok_stack(st);
+        st = stack_pop(st);
+        fifo_push(output, temp);
+    }
+    
     return output;
 }
