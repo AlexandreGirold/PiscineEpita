@@ -1,83 +1,119 @@
+#include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <errno.h>
+#include "my_c_tail.h"
 
-void stdintail(unsigned int n) {
-    if (n == 0) return;
 
-    // Allocate an array of pointers to hold the lines
-    char **lines = (char **)calloc(n, sizeof(char *));
-    if (!lines) return;
-
-    int count = 0;
+static size_t length(char *s)
+{
     size_t len = 0;
-    ssize_t read;
-    char *line = NULL;
+    char ch;
+    while(read(STDIN_FILENO, &ch, 1) > 0)
+    {
+        if(ch == '\n')
+            return null;
+        len++;
+    }
+}
 
-    while (1) {
-        // Read a character at a time
-        char ch;
-        ssize_t bytes_read = read(STDIN_FILENO, &ch, 1);
-        if (bytes_read <= 0) break;
 
-        // Allocate memory for the line if necessary
-        if (line == NULL) {
-            len = 16;
-            line = (char *)malloc(len);
-            if (!line) {
-                // Handle allocation error
-                free(lines);
-                return;
-            }
-        } else if (count % len == 0) {
-            len *= 2;
-            char *temp = (char *)realloc(line, len);
-            if (!temp) {
-                // Handle allocation error
-                free(line);
-                free(lines);
-                return;
-            }
-            line = temp;
-        }
 
-        // Append the read character to the line
-        line[count++] = ch;
+void stdintail(unsigned int n) 
+{
 
-        // If the character is a newline, process the line
-        if (ch == '\n') {
-            line[count] = '\0'; // Null-terminate the string
 
-            // If the buffer is full, free the oldest line
-            if (lines[n-1]) {
-                free(lines[0]);
-                for (unsigned int i = 1; i < n; ++i) {
-                    lines[i-1] = lines[i];
-                }
-                lines[n-1] = line;
-            } else {
-                for (unsigned int i = 0; i < n; ++i) {
-                    if (!lines[i]) {
-                        lines[i] = line;
-                        break;
-                    }
-                }
-            }
+  if (n == 0)
+    return;
 
-            // Reset for the next line
-            line = NULL;
-            count = 0;
-        }
+  // Allocate an array of pointers to hold the lines
+  char **lines = calloc(n, sizeof(char *));
+  if (!lines)
+    return;
+
+  int count = 0;
+  size_t len = 0;
+  ssize_t read;
+  char *line = NULL;
+
+  while (1) 
+  {
+    char ch;
+    ssize_t bytes_read = read(STDIN_FILENO, &ch, 1);
+    if (bytes_read <= 0)
+      break;
+
+    if (line == NULL) 
+    {
+      len = 16;
+      line = malloc(len);
+      if (!line) {
+        free(lines);
+        return;
+      }
+    } 
+    else if (count % len == 0) 
+    {
+      len *= 2;
+      char *temp = realloc(line, len);
+      if (!temp) 
+      {
+        free(line);
+        free(lines);
+        return;
+      }
+      line = temp;
     }
 
-    // Write the last n lines to stdout
-    for (unsigned int i = 0; i < n; ++i) {
-        if (lines[i]) {
-            write(STDOUT_FILENO, lines[i], strlen(lines[i]));
-            free(lines[i]);
+    line[count++] = ch;
+
+    if (ch == '\n') 
+    {
+      line[count] = '\0';
+
+      if (lines[n - 1]) 
+      {
+        free(lines[0]);
+        for (unsigned int i = 1; i < n; ++i) 
+        {
+          lines[i - 1] = lines[i];
         }
+        lines[n - 1] = line;
+      } else {
+        for (unsigned int i = 0; i < n; ++i) 
+        {
+          if (!lines[i]) 
+          {
+            lines[i] = line;
+            break;
+          }
+        }
+      }
+
+      line = NULL;
+      count = 0;
+    }
+  }
+
+  for (unsigned int i = 0; i < n; ++i) 
+  {
+    if (lines[i]) 
+    {
+      write(STDOUT_FILENO, lines[i], strlen(lines[i]));
+      free(lines[i]);
+    }
+  }
+
+  free(lines);
+}
+
+int main(int argc, char **argv)
+{
+    if (argc != 2)
+    {
+        return 1;
     }
 
-    // Clean up
-    free(lines);
+    unsigned int n = atoi(argv[1]);
+    stdintail(n);
+    return 0;
 }

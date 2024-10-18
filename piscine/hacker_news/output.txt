@@ -1,0 +1,90 @@
+**Sinclair Broadcast Group identifies data breach**
+https://apnews.com/article/technology-business-arts-and-entertainment-be48d7582fdd5604664fff33ed81ca80
+
+**A gentle introduction to the FFT (2002)**
+https://www.earlevel.com/main/2002/08/31/a-gentle-introduction-to-the-fft/
+
+**Jon Ingold on translating archeology into video games**
+https://thebrowser.com/notes/jon-ingold/
+
+**Ask HN: How to Sell a Website**
+https://news.ycombinator.com/item?id=28943611
+
+**We analyzed 425k favicons**
+https://iconmap.io/blog
+
+**Machu Picchu was built over major fault zones (2019)**
+https://www.science.org/content/article/machu-picchu-was-built-over-major-fault-zones-now-researchers-think-they-know-why
+
+**Goggles: Democracy dies in darkness, and so does the Web [pdf]**
+https://brave.com/wp-content/uploads/2021/03/goggles.pdf
+
+**Apple M1 Max Geekbench Score**
+https://browser.geekbench.com/v5/cpu/10496766
+
+**U.S. tightens export controls on items used in surveillance of private citizens**
+https://www.commerce.gov/news/press-releases/2021/10/commerce-tightens-export-controls-items-used-surveillance-private
+
+**WeWork is trying to go public – again**
+https://www.wsj.com/articles/wework-set-to-go-public-via-spac-deal-two-years-after-failed-ipo-11634808600
+
+**Playstation 3 Architecture**
+https://www.copetti.org/writings/consoles/playstation-3/
+
+**About that time I had an outburst during the Y Combinator Interview**
+https://owlpal.substack.com/p/about-that-time-i-had-an-outburst
+
+**One Man's Pest**
+https://www.guernicamag.com/one-mans-pest/
+
+**Brave Search replaces Google as default search engine in the Brave browser**
+https://brave.com/search-and-web-discovery/
+
+**I reverse engineered mcdonald's internal API**
+https://twitter.com//rashiq/status/1319346264992026624
+
+**Injury response to DNA damage in live tumor cells promotes antitumor immunity**
+https://www.science.org/doi/10.1126/scisignal.abc4764
+
+**India Counting Down to 1B Doses**
+https://www.cowin.gov.in/
+
+**Time to get worried about Tether, the “stablecoin” at center of cryptocurrency**
+https://slate.com/technology/2021/10/tether-crypto-danger-ben-mckenzie.html
+
+**The History of Surveying**
+https://www.alifewithoutlimits.com.au/the-history-of-surveying/
+
+**The FDA wants you to be able to buy a hearing aid without a prescription**
+https://www.npr.org/2021/10/19/1047303559/fda-hearing-aid-prescription-over-the-counter
+
+**Windows 11 will hobble gaming performance by default on some prebuilt PCs**
+https://www.pcgamer.com/windows-11-pcs-can-hobble-gaming-performance/
+
+**Development version: GIMP 2.99.8 Released**
+https://www.gimp.org/news/2021/10/20/gimp-2-99-8-released/
+
+**I couldn't debug the code because of my name**
+https://mikolaj-kaminski.com/jetbrains-rider-docker-compose-unicodedecodeerror-issue-fix/
+
+**Getting the best out of OpenSCAD**
+https://calbryant.uk/blog/10-ways-to-get-the-best-out-of-openscad/
+
+**Study: Recycled Lithium Batteries as Good as Newly Mined**
+https://spectrum.ieee.org/recycled-batteries-good-as-newly-mined
+
+**Eliminating gifted programs won’t make education fair**
+https://americasfuture.org/eliminating-gifted-programs-wont-make-education-fair/
+
+**Gtk4 Tutorial**
+https://github.com/ToshioCP/Gtk4-tutorial/blob/main/Readme.md
+
+**Cosmopolitan Identiﬁers**
+https://obua.com/publications/cosmo-id/3/
+
+**A talk with Walter Bright about Empire**
+https://madned.substack.com/p/a-talk-with-computer-gaming-pioneer
+
+**Bioelektryczność – Polish Robotics (1968) [video]**
+https://www.youtube.com/watch?v=NjrYk546uBA
+

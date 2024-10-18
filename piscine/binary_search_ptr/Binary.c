@@ -1,5 +1,7 @@
-#include "bsearch.h"
+//#include "bsearch.h"
 #include <stddef.h>
+#include <assert.h>
+#include <stdio.h>
 
 int *binary_search(int *begin, int *end, int elt) {
     while (begin < end) {
