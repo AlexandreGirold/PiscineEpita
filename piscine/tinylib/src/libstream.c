@@ -1,4 +1,4 @@
-#include "libstream.h"
+#include "../include/libstream.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>

@@ -8,15 +8,15 @@ EXEC = test_buffering
 all: $(LIB) $(EXEC)
 
 $(LIB): $(OBJ)
-    ar rcs $@ $^
+	ar rcs $@ $^
 
 $(EXEC): $(OBJ)
-    $(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
-    $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-    rm -f $(OBJ) $(LIB) $(EXEC)
+	rm -f $(OBJ) $(LIB) $(EXEC)
 
 .PHONY: all clean
